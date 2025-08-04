@@ -315,25 +315,6 @@ claude-code-free.bat --help  # Windows
 - [功能建议](https://github.com/your-username/claude-code-free/issues/new?template=feature_request.md)
 - [使用问题](https://github.com/your-username/claude-code-free/discussions)
 
-### 📝 文档改进
-
-帮助我们完善文档：
-- 修正错误
-- 补充示例
-- 翻译内容
-- 优化结构
-
-## 📊 项目统计
-
-<div align="center">
-
-![GitHub contributors](https://img.shields.io/github/contributors/your-username/claude-code-free?style=flat-square)
-![GitHub issues](https://img.shields.io/github/issues/your-username/claude-code-free?style=flat-square)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/your-username/claude-code-free?style=flat-square)
-![GitHub last commit](https://img.shields.io/github/last-commit/your-username/claude-code-free?style=flat-square)
-
-</div>
-
 
 
 ## 🙏 致谢
