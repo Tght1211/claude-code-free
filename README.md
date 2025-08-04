@@ -77,7 +77,7 @@ chmod +x claude-code-free.sh
 #### 方式二：Git 克隆
 
 ```bash
-git clone https://github.com/your-username/claude-code-free.git
+git clone https://github.com/Tght1211/claude-code-free.git
 cd claude-code-free
 
 # Linux/macOS  
