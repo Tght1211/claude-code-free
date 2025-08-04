@@ -3,49 +3,40 @@
 # Claude Code Router 安装配置脚本
 # 版本: 1.0.0
 
-# Claude Code 风格颜色定义
-RED='\033[38;5;203m'        # 柔和红色
-GREEN='\033[38;5;120m'      # 现代绿色  
-YELLOW='\033[38;5;221m'     # 温暖黄色
-BLUE='\033[38;5;75m'        # Claude 蓝色
-PURPLE='\033[38;5;147m'     # 优雅紫色
-CYAN='\033[38;5;87m'        # 清新青色
-ORANGE='\033[38;5;215m'     # 活力橙色
-GRAY='\033[38;5;245m'       # 柔和灰色
-WHITE='\033[38;5;255m'      # 纯白色
+# Apple Design 风格颜色定义
+GREEN='\033[38;5;47m'       # Apple 绿色
+BLUE='\033[38;5;69m'        # Apple 蓝色
+YELLOW='\033[38;5;221m'     # Apple 黄色
+RED='\033[38;5;197m'        # Apple 红色
+GRAY='\033[38;5;245m'       # Apple 灰色
+LIGHT_GRAY='\033[38;5;250m' # 浅灰色
+DARK_GRAY='\033[38;5;240m'  # 深灰色
 BOLD='\033[1m'              # 粗体
 DIM='\033[2m'               # 暗淡
-UNDERLINE='\033[4m'         # 下划线
+ITALIC='\033[3m'            # 斜体
 NC='\033[0m'                # 重置颜色
 
 # 显示帮助信息
 show_help() {
     clear
-    echo -e "${BOLD}${BLUE}"
-    echo "   ╭─────────────────────────────────────────────────────────╮"
-    echo "   │                                                         │"
-    echo "   │    🤖 Claude Code Router 安装配置脚本 v1.0.0            │"
-    echo "   │                                                         │"
-    echo "   ╰─────────────────────────────────────────────────────────╯"
-    echo -e "${NC}"
     echo ""
-    echo -e "${BOLD}${WHITE}📋 用法:${NC}"
-    echo -e "${CYAN}  ./setup-claude-code-router.sh${NC}          ${GRAY}# 完整安装和配置${NC}"
-    echo -e "${CYAN}  ./setup-claude-code-router.sh update${NC}   ${GRAY}# 仅更新软件包${NC}"
-    echo -e "${CYAN}  ./setup-claude-code-router.sh --help${NC}   ${GRAY}# 显示帮助信息${NC}"
+    echo "📋 用法:"
+    echo "  ./claude-code-free.sh          # 完整安装和配置"
+    echo "  ./claude-code-free.sh update   # 仅更新软件包"
+    echo "  ./claude-code-free.sh --help   # 显示帮助信息"
     echo ""
-    echo -e "${BOLD}${WHITE}🚀 完整安装流程:${NC}"
-    echo -e "  ${GREEN}1.${NC} ${WHITE}检查 Node.js 版本${NC} ${GRAY}(需要 20+)${NC}"
-    echo -e "  ${GREEN}2.${NC} ${WHITE}检查/安装 Claude Code${NC}"
-    echo -e "  ${GREEN}3.${NC} ${WHITE}检查/安装 Claude Code Router${NC}"
-    echo -e "  ${GREEN}4.${NC} ${WHITE}配置魔搭 API${NC} ${GRAY}(可选)${NC}"
-    echo -e "  ${GREEN}5.${NC} ${WHITE}创建配置文件${NC} ${GRAY}(可选)${NC}"
-    echo -e "  ${GREEN}6.${NC} ${WHITE}重启服务${NC}"
-    echo -e "  ${GREEN}7.${NC} ${WHITE}推荐 MCP 插件${NC} ${GRAY}(可选)${NC}"
+    echo "🚀 完整安装流程:"
+    echo "  1. 检查 Node.js 版本 (需要 20+)"
+    echo "  2. 检查/安装 Claude Code"
+    echo "  3. 检查/安装 Claude Code Router"
+    echo "  4. 配置魔搭 API (可选)"
+    echo "  5. 创建配置文件 (可选)"
+    echo "  6. 重启服务"
+    echo "  7. 推荐 MCP 插件 (可选)"
     echo ""
-    echo -e "${BOLD}${YELLOW}💡 提示:${NC}"
-    echo -e "  ${GRAY}•${NC} update 模式只会更新软件包，不会修改配置"
-    echo -e "  ${GRAY}•${NC} 安装过程中遇到问题可随时按 Ctrl+C 退出"
+    echo "💡 提示:"
+    echo "  • update 模式只会更新软件包，不会修改配置"
+    echo "  • 安装过程中遇到问题可随时按 Ctrl+C 退出"
     echo ""
 }
 
@@ -67,33 +58,55 @@ print_info() {
 }
 
 print_step() {
-    echo -e "${BOLD}${PURPLE}  🔄 步骤 $1: ${WHITE}$2${NC}"
+    echo -e "${BOLD}${BLUE}步骤 $1/$2: ${NC}${LIGHT_GRAY}$3${NC}"
 }
 
 print_header() {
     echo ""
-    echo -e "${BOLD}${BLUE}  ╭─────────────────────────────────────────────────────────╮${NC}"
-    echo -e "${BOLD}${BLUE}  │  $1${NC}$(printf "%*s" $((55 - ${#1})) "")${BOLD}${BLUE}│${NC}"
-    echo -e "${BOLD}${BLUE}  ╰─────────────────────────────────────────────────────────╯${NC}"
+    echo -e "${BOLD}${BLUE}$1${NC}"
+    echo -e "${DIM}${GRAY}――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――${NC}"
     echo ""
 }
 
 print_divider() {
-    echo -e "${GRAY}  ─────────────────────────────────────────────────────────${NC}"
+    echo -e "${GRAY}  ────────────────────────────────────────────────────────────────────────────────${NC}"
+}
+
+print_section_divider() {
+    echo -e "${DIM}${GRAY}  ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄${NC}"
 }
 
 print_progress() {
     local current=$1
     local total=$2
-    local width=40
-    local percentage=$((current * 100 / total))
-    local filled=$((current * width / total))
-    local empty=$((width - filled))
     
-    printf "\r${BOLD}${BLUE}  进度: [${NC}"
-    printf "${GREEN}%*s${NC}" $filled "" | tr ' ' '█'
-    printf "%*s" $empty "" | tr ' ' '░'
-    printf "${BOLD}${BLUE}] %d%% (%d/%d)${NC}" $percentage $current $total
+    # 简单的进度指示器
+    printf "  🔄 步骤进度: "
+    for ((i=1; i<=total; i++)); do
+        if [ $i -eq $current ]; then
+            printf "● "  # 当前步骤
+        elif [ $i -lt $current ]; then
+            printf "● "  # 已完成步骤
+        else
+            printf "○ "  # 未完成步骤
+        fi
+    done
+    printf "(%d/%d)\n" $current $total
+}
+
+print_spinner() {
+    local pid=$1
+    local delay=0.1
+    local spinstr='|/-\'
+    local temp
+    while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
+        local temp=${spinstr#?}
+        printf " [%c]  " "$spinstr"
+        local spinstr=$temp${spinstr%"$temp"}
+        sleep $delay
+        printf "\b\b\b\b\b\b"
+    done
+    printf "    \b\b\b\b"
 }
 
 # 检查命令是否存在
@@ -267,7 +280,7 @@ get_moda_key() {
     echo -e "${GRAY}       (直接按 Enter 跳过)${NC}"
     echo ""
     echo -n -e "${BOLD}${BLUE}  ┌ ${NC}"
-    read -s MODA_API_KEY
+    read MODA_API_KEY
     echo ""
     echo -e "${GRAY}  └ ╰───────────────────────────────────────────────${NC}"
     
@@ -411,34 +424,32 @@ restart_service() {
 # 显示使用教程
 show_tutorial() {
     echo ""
-    echo -e "${GREEN}🎉 安装配置完成！${NC}"
+    print_header "🎉 安装配置完成！"
     echo ""
-    echo -e "${BLUE}使用教程:${NC}"
-    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    echo -e "${YELLOW}基础命令:${NC}"
-    echo "  ccr code    - 启动 Claude Code"
-    echo "  ccr ui      - 访问 UI 界面配置第三方 API"
-    echo "  ccr restart - 重启服务（修改配置后需要执行）"
-    echo "  ccr stop    - 停止服务"
-    echo "  ccr status  - 查看服务状态"
+    echo -e "${BOLD}${BLUE}使用教程:${NC}"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo -e "${BOLD}${YELLOW}基础命令:${NC}"
+    echo -e "  ${CYAN}ccr code${NC}    - 启动 Claude Code"
+    echo -e "  ${CYAN}ccr ui${NC}      - 访问 UI 界面配置第三方 API"
+    echo -e "  ${CYAN}ccr restart${NC} - 重启服务（修改配置后需要执行）"
+    echo -e "  ${CYAN}ccr stop${NC}    - 停止服务"
+    echo -e "  ${CYAN}ccr status${NC}  - 查看服务状态"
     echo ""
-    echo -e "${YELLOW}配置文件位置:${NC}"
-    echo "  ~/.claude-code-router/config.json"
+    echo -e "${BOLD}${YELLOW}配置文件位置:${NC}"
+    echo -e "  ${WHITE}~/.claude-code-router/config.json${NC}"
     echo ""
-    echo -e "${YELLOW}重要提示:${NC}"
-    echo "  • 每次修改配置后记得执行 'ccr restart'"
-    echo "  • 如需修改 API Key，请编辑配置文件后重启"
-    echo "  • UI 界面地址: http://127.0.0.1:3456"
+    echo -e "${BOLD}${YELLOW}重要提示:${NC}"
+    echo -e "  • 每次修改配置后记得执行 ${BOLD}${CYAN}'ccr restart'${NC}"
+    echo -e "  • 如需修改 API Key，请编辑配置文件后重启"
+    echo -e "  • UI 界面地址: ${BOLD}${UNDERLINE}${CYAN}http://127.0.0.1:3456${NC}"
     echo ""
-    echo -e "${GREEN}开始使用吧！${NC}"
+    echo -e "${BOLD}${GREEN}开始使用吧！${NC}"
 }
 
 # 安装推荐的 MCP 插件
 install_recommended_mcps() {
     echo ""
-    echo -e "${BLUE}═══════════════════════════════════════${NC}"
-    echo -e "${YELLOW}🚀 推荐安装以下 MCP 插件来增强 Claude Code 功能${NC}"
-    echo -e "${BLUE}═══════════════════════════════════════${NC}"
+    print_header "🚀 推荐安装以下 MCP 插件来增强 Claude Code 功能"
     echo ""
     
     # MCP 插件列表 (使用普通变量以提升兼容性)
@@ -449,21 +460,21 @@ install_recommended_mcps() {
     mcps_sequential_thinking="助力思考分析|npx -y @modelcontextprotocol/server-sequential-thinking"
     
     # 显示 MCP 插件列表
-    echo -e "${YELLOW}可用的 MCP 插件:${NC}"
-    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo -e "${BOLD}${YELLOW}可用的 MCP 插件:${NC}"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     local count=1
     for mcp_name in "context7" "memory" "fetch" "Playwright" "sequential-thinking"; do
         # 动态获取变量名 (将 - 替换为 _)
         var_name="mcps_${mcp_name//-/_}"
         mcp_info=$(eval echo \$${var_name})
         IFS='|' read -r description package <<< "$mcp_info"
-        echo -e "${count}. ${GREEN}${mcp_name}${NC} - ${description}"
+        echo -e "${count}. ${BOLD}${GREEN}${mcp_name}${NC} - ${WHITE}${description}${NC}"
         ((count++))
     done
     echo ""
     
     # 询问用户是否要安装
-    echo -n -e "${BLUE}是否要安装这些推荐的 MCP 插件？ (y/N): ${NC}"
+    echo -n -e "${BOLD}${BLUE}是否要安装这些推荐的 MCP 插件？ (y/N): ${NC}"
     read -r install_mcps
     
     if [[ ! "$(echo "$install_mcps" | tr '[:upper:]' '[:lower:]')" =~ ^(y|yes|是)$ ]]; then
@@ -496,7 +507,7 @@ install_recommended_mcps() {
     done
     
     # 显示安装结果
-    echo -e "${BLUE}═══════════════════════════════════════${NC}"
+    print_header "📊 MCP 插件安装结果"
     if [ $success_count -eq $total_count ]; then
         print_success "所有 MCP 插件安装完成！(${success_count}/${total_count})"
     elif [ $success_count -gt 0 ]; then
@@ -506,11 +517,11 @@ install_recommended_mcps() {
     fi
 
     echo ""
-    echo -e "${YELLOW}MCP 使用提示:${NC}"
+    echo -e "${BOLD}${YELLOW}MCP 使用提示:${NC}"
     echo "  • 已安装的 MCP 插件会自动在 Claude Code 中生效"
-    echo "  • 可以使用 'claude mcp list' 查看已安装的插件"
-    echo "  • 可以使用 'claude mcp remove <name>' 移除插件"
-    echo "  • 更多信息请访问: https://docs.anthropic.com/en/docs/claude-code/mcp"
+    echo "  • 可以使用 ${BOLD}${CYAN}'claude mcp list'${NC} 查看已安装的插件"
+    echo "  • 可以使用 ${BOLD}${CYAN}'claude mcp remove <name>'${NC} 移除插件"
+    echo "  • 更多信息请访问: ${BOLD}${UNDERLINE}${CYAN}https://docs.anthropic.com/en/docs/claude-code/mcp${NC}"
     echo ""
 }
 
@@ -524,7 +535,7 @@ update_mode() {
     
     local total_steps=3
     
-    print_step "1/$total_steps" "检查 Node.js 版本"
+    print_step 1 $total_steps "检查 Node.js 版本"
     check_node_version
     print_progress 1 $total_steps
     echo ""
@@ -583,32 +594,32 @@ full_install_mode() {
     print_progress 1 $total_steps
     echo ""
     
-    print_step "2/$total_steps" "检查/安装 Claude Code"
+    print_step 2 $total_steps "检查/安装 Claude Code"
     install_claude_code  
     print_progress 2 $total_steps
     echo ""
     
-    print_step "3/$total_steps" "检查/安装 Claude Code Router"
+    print_step 3 $total_steps "检查/安装 Claude Code Router"
     install_claude_code_router
     print_progress 3 $total_steps
     echo ""
     
-    print_step "4/$total_steps" "配置魔搭 API (可选)"
+    print_step 4 $total_steps "配置魔搭 API (可选)"
     get_moda_key
     print_progress 4 $total_steps
     echo ""
     
-    print_step "5/$total_steps" "创建配置文件 (可选)"
+    print_step 5 $total_steps "创建配置文件 (可选)"
     create_config_file
     print_progress 5 $total_steps
     echo ""
     
-    print_step "6/$total_steps" "重启服务"
+    print_step 6 $total_steps "重启服务"
     restart_service
     print_progress 6 $total_steps
     echo ""
     
-    print_step "7/$total_steps" "推荐 MCP 插件 (可选)"
+    print_step 7 $total_steps "推荐 MCP 插件 (可选)"
     install_recommended_mcps
     print_progress 7 $total_steps
     echo ""
@@ -622,19 +633,12 @@ full_install_mode() {
 # 显示欢迎界面
 show_welcome() {
     clear
-    echo -e "${BOLD}${BLUE}"
-    echo "   ╭─────────────────────────────────────────────────────────╮"
-    echo "   │                                                         │"
-    echo "   │    🤖 欢迎使用 Claude Code Free 安装配置脚本                │"
-    echo "   │                                                         │"
-    echo "   │    🚀 一键免费使用Claude Code                             │"
-    echo "   │                                                         │"
-    echo "   ╰─────────────────────────────────────────────────────────╯"
-    echo -e "${NC}"
     echo ""
-    echo -e "${GRAY}  作者: Tght  │  版本: v1.0.0  │  2025${NC}"
+    echo -e "${BOLD}${BLUE}🤖 Claude Code Free 安装配置脚本${NC}"
+    echo -e "${LIGHT_GRAY}🚀 一键免费使用 Claude Code${NC}"
     echo ""
-    print_divider
+    echo -e "${DIM}${GRAY}版本: v1.0.0  │  作者: Tght  │  2025${NC}"
+    echo -e "${DIM}${GRAY}――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――${NC}"
     echo ""
 }
 
