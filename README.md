@@ -64,6 +64,8 @@ Claude Code Free 是一个**一键安装配置脚本**，让你能够**完全免
 ```bash
 # 下载脚本
 curl -o claude-code-free.sh https://raw.githubusercontent.com/your-username/claude-code-free/main/claude-code-free.sh
+# 或者gitee的方式
+curl -o claude-code-free.sh https://gitee.com/tght1211/claude-code-free/raw/main/claude-code-free.sh
 
 # 添加执行权限
 chmod +x claude-code-free.sh
