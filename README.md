@@ -4,8 +4,6 @@
 
 ![Claude Code Free](https://img.shields.io/badge/Claude%20Code-Free-blue?style=for-the-badge&logo=anthropic&logoColor=white&labelColor=0051D5)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-green?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-orange?style=for-the-badge)
-![Stars](https://img.shields.io/github/stars/your-username/claude-code-free?style=for-the-badge&color=yellow)
 
 **🚀 一键免费使用 Claude Code - 无需 API 费用！**
 
