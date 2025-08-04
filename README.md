@@ -182,21 +182,52 @@ claude mcp add <plugin-name> -- <package-command>
 
 ### ⚙️ 自定义配置示例
 
+> ccr 的配置，详情可以查看 claude-code-router 开源项目
 ```json
 {
+    "LOG": false,
+    "CLAUDE_PATH": "",
     "HOST": "127.0.0.1",
     "PORT": 3456,
+    "APIKEY": "",
+    "transformers": [
+
+    ],
     "Providers": [
         {
             "name": "moda",
             "api_base_url": "https://api-inference.modelscope.cn/v1/chat/completions",
-            "api_key": "your-api-key-here",
+            "api_key": "填入魔搭的key",
             "models": [
                 "Qwen/Qwen3-Coder-480B-A35B-Instruct",
-                "Qwen/Qwen3-235B-A22B-Thinking-2507"
-            ]
+                "Qwen/Qwen3-235B-A22B-Thinking-2507",
+                "Qwen/Qwen3-Coder-30B-A3B-Instruct"
+            ],
+            "transformer": {
+                "use": [
+                    [
+                        "maxtoken",
+                        {
+                            "max_tokens": 65535
+                        }
+                    ],
+                    "enhancetool"
+                ],
+                "Qwen/Qwen3-235B-A22B-Thinking-2507": {
+                    "use": [
+                        "reasoning"
+                    ]
+                }
+            }
         }
-    ]
+    ],
+    "Router": {
+        "default": "moda,Qwen/Qwen3-Coder-480B-A35B-Instruct",
+        "background": "moda,Qwen/Qwen3-Coder-30B-A3B-Instruct",
+        "think": "moda,Qwen/Qwen3-235B-A22B-Thinking-2507",
+        "longContext": "moda,Qwen/Qwen3-Coder-480B-A35B-Instruct",
+        "webSearch": "moda,Qwen/Qwen3-Coder-30B-A3B-Instruct"
+    }
 }
 ```
 
@@ -303,21 +334,18 @@ claude-code-free.bat --help  # Windows
 
 </div>
 
-## 📜 许可证
 
-本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
 
 ## 🙏 致谢
 
 - **Anthropic** - 提供强大的 Claude AI 技术
 - **ModelScope** - 提供免费的 API 服务
-- **Claude Code Router** - 核心路由服务
+- **[Claude Code Router](https://github.com/MusiStudio/claude-code-router)** - 核心路由服务 
 - **开源社区** - 提供宝贵的反馈和贡献
 
 ## 📞 联系我们
 
 - **作者**: Tght
-- **邮箱**: your-email@example.com
 - **项目主页**: [https://github.com/your-username/claude-code-free](https://github.com/your-username/claude-code-free)
 - **问题反馈**: [Issues](https://github.com/your-username/claude-code-free/issues)
 
