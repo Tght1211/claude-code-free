@@ -3,7 +3,7 @@
 <div align="center">
 
 ![Claude Code Free](https://img.shields.io/badge/Claude%20Code-Free-blue?style=for-the-badge&logo=anthropic&logoColor=white&labelColor=0051D5)
-![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-green?style=for-the-badge)
+![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20macOS-green?style=for-the-badge)
 
 **🚀 一键免费使用 Claude Code - 无需 API 费用！**
 
@@ -23,7 +23,7 @@ Claude Code Free 是一个**一键安装配置脚本**，让你能够**完全免
 
 - 🆓 **完全免费** - 无需 Anthropic API 费用
 - ⚡ **一键安装** - 自动配置所有依赖和设置  
-- 🌍 **跨平台支持** - Windows、Linux、macOS 全覆盖
+- 🌍 **跨平台支持** - Linux、macOS 全覆盖
 - 🔧 **开箱即用** - 零配置启动，省心省力
 - 🚀 **性能强劲** - 基于 Qwen3-Coder 480B 模型
 
@@ -54,28 +54,12 @@ Claude Code Free 是一个**一键安装配置脚本**，让你能够**完全免
 ### 📋 系统要求
 
 - **Node.js** 20+ 
-- **操作系统**: Windows 10+、Linux、macOS 10.15+
+- **操作系统**: Linux、macOS 10.15+
 - **网络**: 稳定的互联网连接
 
 ### ⬇️ 下载安装
 
 #### 方式一：直接下载（推荐）
-
-<details>
-<summary><b>🪟 Windows 用户</b></summary>
-
-```bash
-# 下载脚本
-curl -o claude-code-free.bat https://raw.githubusercontent.com/your-username/claude-code-free/main/claude-code-free.bat
-
-# 运行安装
-claude-code-free.bat
-```
-
-</details>
-
-<details>
-<summary><b>🐧 Linux / 🍎 macOS 用户</b></summary>
 
 ```bash
 # 下载脚本
@@ -88,16 +72,11 @@ chmod +x claude-code-free.sh
 ./claude-code-free.sh
 ```
 
-</details>
-
 #### 方式二：Git 克隆
 
 ```bash
 git clone https://github.com/your-username/claude-code-free.git
 cd claude-code-free
-
-# Windows
-claude-code-free.bat
 
 # Linux/macOS  
 ./claude-code-free.sh
@@ -151,10 +130,6 @@ ccr status          # 查看状态
 ### 🔄 更新软件
 
 ```bash
-# Windows
-claude-code-free.bat update
-
-# Linux/macOS
 ./claude-code-free.sh update
 ```
 
@@ -175,7 +150,6 @@ claude mcp add <plugin-name> -- <package-command>
 
 ### 📁 配置文件位置
 
-- **Windows**: `%USERPROFILE%\.claude-code-router\config.json`
 - **Linux/macOS**: `~/.claude-code-router/config.json`
 
 ### ⚙️ 自定义配置示例
@@ -274,8 +248,7 @@ sudo ./claude-code-free.sh
 
 ```bash
 # 显示帮助信息
-claude-code-free.sh --help  # Linux/macOS
-claude-code-free.bat --help  # Windows
+claude-code-free.sh --help
 ```
 
 ## 🎪 使用场景
