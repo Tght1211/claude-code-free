@@ -114,28 +114,166 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
+# 安装 NVM (Node Version Manager)
+install_nvm() {
+    print_info "安装 NVM (Node Version Manager)..."
+    
+    # 使用中国地区友好的安装源
+    NVM_INSTALL_URL="https://gitee.com/mirrors/nvm/raw/master/install.sh"
+    
+    # 下载并执行 nvm 安装脚本
+    if curl -o- "$NVM_INSTALL_URL" | bash; then
+        print_success "NVM 安装成功"
+        
+        # 重新加载 bash profile 以使 nvm 命令生效
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+        [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+        
+        # 如果仍然找不到 nvm，尝试从常见位置加载
+        if ! command_exists nvm; then
+            if [ -f ~/.bashrc ]; then
+                source ~/.bashrc
+            fi
+            if [ -f ~/.zshrc ]; then
+                source ~/.zshrc
+            fi
+        fi
+        
+        return 0
+    else
+        print_error "NVM 安装失败"
+        print_info "尝试使用官方源..."
+        
+        # 备用方案：使用官方源
+        if curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash; then
+            print_success "NVM 安装成功（使用官方源）"
+            
+            # 重新加载环境
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+            
+            return 0
+        else
+            print_error "NVM 安装失败，请手动安装"
+            return 1
+        fi
+    fi
+}
+
+# 使用 NVM 安装 Node.js 20
+install_nodejs_with_nvm() {
+    print_info "使用 NVM 安装 Node.js 20..."
+    
+    # 确保 nvm 命令可用
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    
+    # 使用中国地区的 Node.js 镜像源加速下载
+    export NVM_NODEJS_ORG_MIRROR=https://npmmirror.com/mirrors/node/
+    
+    # 安装 Node.js 20
+    if nvm install 20; then
+        print_success "Node.js 20 安装成功"
+        
+        # 设置为默认版本并使用
+        if nvm alias default 20 && nvm use 20; then
+            print_success "Node.js 20 已设置为默认版本"
+            
+            # 设置 npm 使用中国镜像源
+            npm config set registry https://registry.npmmirror.com
+            print_info "已配置 npm 使用中国镜像源"
+            
+            return 0
+        else
+            print_warning "Node.js 20 安装成功，但设置默认版本失败"
+            return 1
+        fi
+    else
+        print_error "Node.js 20 安装失败"
+        return 1
+    fi
+}
+
 # 检查 Node.js 版本
 check_node_version() {
     print_info "检查 Node.js 版本..."
     
     if ! command_exists node; then
-        print_error "未找到 Node.js！"
-        print_error "请安装 Node.js 20 或更高版本"
-        print_info "推荐使用 nvm 安装: https://github.com/nvm-sh/nvm"
-        exit 1
+        print_warning "未找到 Node.js！"
+        print_info "准备自动安装 Node.js 20..."
+        echo ""
+        
+        # 检查是否已安装 nvm
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+        
+        if ! command_exists nvm; then
+            print_info "未找到 NVM，开始安装..."
+            if ! install_nvm; then
+                print_error "NVM 安装失败"
+                print_info "请手动安装 Node.js 20 或更高版本"
+                print_info "官方下载地址: https://nodejs.org/"
+                exit 1
+            fi
+        else
+            print_success "检测到已安装的 NVM"
+        fi
+        
+        # 使用 NVM 安装 Node.js
+        if ! install_nodejs_with_nvm; then
+            print_error "Node.js 自动安装失败"
+            print_info "请手动执行以下命令："
+            print_info "  nvm install 20"
+            print_info "  nvm use 20"
+            exit 1
+        fi
+        
+        # 重新检查 Node.js 是否可用
+        if ! command_exists node; then
+            print_error "Node.js 安装后仍无法使用"
+            print_info "请重新打开终端或执行: source ~/.bashrc"
+            exit 1
+        fi
     fi
     
     NODE_VERSION=$(node -v | sed 's/v//')
     MAJOR_VERSION=$(echo $NODE_VERSION | cut -d. -f1)
     
     if [ "$MAJOR_VERSION" -lt 20 ]; then
-        print_error "Node.js 版本过低: v$NODE_VERSION"
-        print_error "需要 Node.js 20 或更高版本"
-        print_info "当前版本: v$NODE_VERSION"
-        exit 1
+        print_warning "Node.js 版本过低: v$NODE_VERSION"
+        print_info "需要 Node.js 20 或更高版本，开始升级..."
+        echo ""
+        
+        # 确保 nvm 可用
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+        
+        if command_exists nvm; then
+            if install_nodejs_with_nvm; then
+                # 重新获取版本信息
+                NODE_VERSION=$(node -v | sed 's/v//')
+                MAJOR_VERSION=$(echo $NODE_VERSION | cut -d. -f1)
+                
+                if [ "$MAJOR_VERSION" -ge 20 ]; then
+                    print_success "Node.js 升级成功: v$NODE_VERSION"
+                else
+                    print_error "Node.js 升级失败"
+                    exit 1
+                fi
+            else
+                print_error "Node.js 升级失败"
+                exit 1
+            fi
+        else
+            print_error "未找到 NVM，无法自动升级"
+            print_info "请手动安装 Node.js 20 或更高版本"
+            exit 1
+        fi
+    else
+        print_success "Node.js 版本检查通过: v$NODE_VERSION"
     fi
-    
-    print_success "Node.js 版本检查通过: v$NODE_VERSION"
 }
 
 # 检查并安装/更新 Claude Code
